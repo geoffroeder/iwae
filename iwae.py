@@ -6,6 +6,7 @@ import nnet
 import utils
 import progressbar
 from utils import t_repeat, log_mean_exp, reshape_and_tile_images
+from theano.gradient import disconnected_grad as block_grad
 
 log2pi = T.constant(np.log(2*np.pi).astype(theano.config.floatX))
 
@@ -54,7 +55,7 @@ class GaussianSampler:
 
     def log_likelihood_samplesIx(self, samples, x):
         mean, sigma = self.mean_sigmaIx(x)
-        return self.log_likelihood_samplesImean_sigma(samples, mean, sigma)
+        return self.log_likelihood_samplesImean_sigma(samples, block_grad(mean), block_grad(sigma))
 
     def first_linear_layer_weights_np(self):
         return self.h_network.first_linear_layer_weights_np()
@@ -158,7 +159,7 @@ class IWAE:
             print "Training a VAE"
             return collections.OrderedDict([(
                                              param,
-                                             T.grad(T.sum(log_ws)/T.cast(num_samples, log_ws.dtype), param)
+                                             T.grad(T.sum(log_ws)/T.cast(num_samples, log_ws.dtype), param,disconnected_inputs='warn'), 
                                             )
                                             for param in self.params])
         else:
