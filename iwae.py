@@ -55,6 +55,10 @@ class GaussianSampler:
 
     def log_likelihood_samplesIx(self, samples, x):
         mean, sigma = self.mean_sigmaIx(x)
+        return self.log_likelihood_samplesImean_sigma(samples, mean, sigma)
+
+    def log_likelihood_samplesIx_blocked(self, samples, x):
+        mean, sigma = self.mean_sigmaIx(x)
         return self.log_likelihood_samplesImean_sigma(samples, block_grad(mean), block_grad(sigma))
 
     def first_linear_layer_weights_np(self):
@@ -136,7 +140,7 @@ class IWAE:
         log_weights = 0
         for layer_q, layer_p, prev_sample, next_sample in zip(self.q_layers, reversed(self.p_layers), q_samples, q_samples[1:]):
             log_weights += layer_p.log_likelihood_samplesIx(prev_sample, next_sample) -\
-                           layer_q.log_likelihood_samplesIx(next_sample, prev_sample)
+                           layer_q.log_likelihood_samplesIx_blocked(next_sample, prev_sample)
         log_weights += self.prior.log_likelihood_samples(q_samples[-1])
         return log_weights
 
