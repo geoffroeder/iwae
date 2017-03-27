@@ -163,7 +163,7 @@ class IWAE:
             print "Training a VAE"
             return collections.OrderedDict([(
                                              param,
-                                             T.grad(T.sum(log_ws)/T.cast(num_samples, log_ws.dtype), param,disconnected_inputs='warn'), 
+                                             T.grad(T.sum(log_ws)/T.cast(num_samples, log_ws.dtype), param), 
                                             )
                                             for param in self.params])
         else:
