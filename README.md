@@ -1,5 +1,5 @@
 # IWAE
-This is the code accompanying the paper [Importance Weighted Autoencoders](http://arxiv.org/abs/1509.00519) by Yuri Burda, Roger Grosse, and Ruslan Salakhutdinov. It has been modified to implement the path derivative estimator for SVI as described in <link pending>.
+This is the code accompanying the paper [Importance Weighted Autoencoders](http://arxiv.org/abs/1509.00519) by Yuri Burda, Roger Grosse, and Ruslan Salakhutdinov. It has been modified to implement the path derivative estimator for reparameterized SVI as described in https://arxiv.org/abs/1703.09194.
 
 # Requirements
 This implementation is based on [theano](http://deeplearning.net/software/theano/). It also uses [progressbar](https://pypi.python.org/pypi/progressbar) to display the training progress.
